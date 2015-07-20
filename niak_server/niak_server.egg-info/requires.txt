@@ -1,0 +1,12 @@
+colander
+deform
+deform_bootstrap
+html2text
+psutil
+pyramid
+pyramid_chameleon
+pyramid_debugtoolbar
+pyramid_tm
+pyramid_mako
+simplejson
+waitress

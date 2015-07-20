@@ -1,0 +1,8 @@
+setup.py
+web_niak.egg-info/PKG-INFO
+web_niak.egg-info/SOURCES.txt
+web_niak.egg-info/dependency_links.txt
+web_niak.egg-info/entry_points.txt
+web_niak.egg-info/not-zip-safe
+web_niak.egg-info/requires.txt
+web_niak.egg-info/top_level.txt

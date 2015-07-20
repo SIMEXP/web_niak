@@ -1,0 +1,10 @@
+pyramid
+html2text
+pyramid_tm
+wtforms
+deform
+simplejson
+psutil
+pyramid_mako
+pyramid_debugtoolbar
+deform_bootstrap
