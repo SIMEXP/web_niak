@@ -21,6 +21,7 @@ requires = [
     'pyramid_mako',
     'simplejson',
     'waitress',
+    'cornice'
     ]
 
 setup(name='niak_server',

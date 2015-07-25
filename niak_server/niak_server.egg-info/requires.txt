@@ -10,3 +10,4 @@ pyramid_tm
 pyramid_mako
 simplejson
 waitress
+cornice

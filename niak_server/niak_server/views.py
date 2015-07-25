@@ -1,35 +1,55 @@
+import os
 
-
+import colander
 import deform
 import deform_bootstrap
-from pyramid.view import view_config
+from pyramid.view import view_config, render_view_to_response
+from pyramid.renderers import render_to_response
 from pyramid.httpexceptions import HTTPFound
-
-from . import forms
-
+from cornice.resource import resource, view, Service
 
 
-@view_config(route_name='home', renderer='figure.mako')
-def my_view(request):
-    return {'project': 'niak_server', "fig_form": ""}
+from . import forms, cfg
+
+
+home = Service(name='home', path='/', description="Simplest app", renderer="form.mako")
+
+@home.get()
+def get_home(request):
+    return {"fig_form": "", "values": None, "fig": ""}
+
+
+upload = Service(name='upload', path='/upload', description="Simplest app", renderer="upload.mako")
+
+@upload.get()
+def get_upload(request):
+    return {"fig_form": "", "values": None, "fig": ""}
+
+@upload.post()
+def post_upload(request):
+    file = request.POST['files']
+
+
+    if not os.path.isdir(cfg.DATA_PATH):
+        os.mkdir(cfg.DATA_PATH)
+
+    out_path = os.path.join(cfg.PROJECT_ROOT, cfg.DATA_PATH, file.filename)
+
+    with open(out_path, "wb") as outfp:
+        outfp.write(file.file.read())
+
+    return HTTPFound(location=request.static_url("niak_server:{}{}".format(cfg.DATA_PATH, file.filename)))
 
 
 
-@view_config(route_name='simple_form', renderer='figure.mako')
-def signin(request):
-    schema = forms.FigureForm()
-    submit = deform.Button(name='show_plot', css_class='btn btn-action text-right show')
-    myform = deform_bootstrap.Form(schema, buttons=(submit,))
 
-    if 'show_plot' in request.POST:
-        controls = request.POST.items()
-        try:
-            appstruct = myform.validate(controls)
-        except deform.ValidationFailure as e:
-            return {'fig_form': e.render(), 'values': False}
-        # Process the valid form data, do some work
+@resource(collection_path='/data', path='/data/figure', renderer='figure.mako')
+class FigViews(object):
+
+    def __init__(self, request):
+        self.request = request
 
 
-        return HTTPFound(location=request.route_url('home'))
-    # We are a GET not a POST
-    return {"fig_form": myform.render(), "values": None}
+    def get(self):
+        name = self.request.matchdict['name']
+        return {self.request.static_url("niak_server:{}{}".format(cfg.DATA_PATH, name))}

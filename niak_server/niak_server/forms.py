@@ -9,6 +9,7 @@ from deform_bootstrap import Form
 import deform
 from deform.widget import OptGroup
 
+from . import cfg
 
 # Validator
 
@@ -20,6 +21,7 @@ def valid_input(node, value):
     :return:
     """
     if not os.path.isdir(value):
+
         raise colander.Invalid(node,
                   '{} is not a valid result directory'.format(value))
 
@@ -27,27 +29,20 @@ def valid_input(node, value):
 # forms
 
 
-class FigureForm(colander.MappingSchema):
+class XFigureForm(colander.MappingSchema):
     """ Form to request a figure
 
     """
 
-    Comments= colander.SchemaNode(
-        colander.String(),
-        title='Comments',
-        widget=deform.widget.TextInputWidget(
-            size=60, css_class='form-control')
-        )
 
-    pipeleine_name = colander.SchemaNode(
-        colander.String(),
-        title='Name',
-        )
-
-
+    home = os.getenv('HOME')
     input = colander.SchemaNode(colander.String(),
-                                       validator=valid_input,
-                                       description='Input path')
-    output = colander.SchemaNode(colander.String(),
-                                       validator=colander.Length(max=100),
-                                       description='Output path')
+                                validator=valid_input,
+                                description='Input path starting, must be in "$HOME/',
+                                default=home)
+
+    # output = colander.SchemaNode(colander.String(),
+    #                              validator=colander.Length(max=100),
+    #                              description='Output path, must be in $HOME/',
+    #                              default=home)
+
