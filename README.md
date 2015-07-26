@@ -14,6 +14,6 @@ this makes ``path/to/web_nial/venv_niak/bin the "default python path" is your te
 
 Some library are needed to have the server running they are include in the setup.py file
 Runnig `python setup.py develop` should install all that you need in your virtual environement
-Di not forget to add the package you add for additional developpement in the setup.py file 
+Do not forget to add the package you add for additional developpement in the setup.py file 
 
 
