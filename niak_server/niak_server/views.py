@@ -1,8 +1,10 @@
 import os
+import shutil
 
 import colander
 import deform
 import deform_bootstrap
+from pyramid import exceptions, response
 from pyramid.view import view_config, render_view_to_response
 from pyramid.renderers import render_to_response
 from pyramid.httpexceptions import HTTPFound
@@ -16,7 +18,7 @@ home = Service(name='home', path='/', description="Simplest app", renderer="form
 
 @home.get()
 def get_home(request):
-    return {"fig_form": "", "values": None, "fig": ""}
+    return {"fig_form": request.route_url('upload'), "values": None, "fig": ""}
 
 
 upload = Service(name='upload', path='/upload', description="Simplest app", renderer="upload.mako")
@@ -42,8 +44,7 @@ def post_upload(request):
 
 
 
-
-@resource(collection_path='/data', path='/data/figure', renderer='figure.mako')
+@resource(collection_path='/data', path='/data/{figure}', renderer='figure.mako')
 class FigViews(object):
 
     def __init__(self, request):
@@ -53,3 +54,32 @@ class FigViews(object):
     def get(self):
         name = self.request.matchdict['name']
         return {self.request.static_url("niak_server:{}{}".format(cfg.DATA_PATH, name))}
+
+
+
+@resource(collection_path='/all', path='/all/{template}')
+class RandomTemplate(object):
+
+    def __init__(self, request):
+        self.request = request
+
+
+    def get(self):
+
+        name = self.request.matchdict['template']
+        full_path = os.path.join(cfg.PROJECT_ROOT, cfg.TEMPLATE_PATH, name)
+
+        if name in self.collection_get()['templates']:
+            return response.FileResponse("{}".format(full_path))
+        else:
+            raise exceptions.NotFound("{} not in /templates dir".format(name))
+
+    def collection_get(self):
+        """
+        :return: All templates in the project
+        """
+        template_path = os.path.join(cfg.PROJECT_ROOT, cfg.TEMPLATE_PATH)
+        all_templates = os.listdir(template_path)
+
+        return {'templates': all_templates}
+

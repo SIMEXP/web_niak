@@ -19,11 +19,11 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <h3 class="thin text-center">Where are your data</h3>
-##                         <p class="text-center text-muted">Lorem ipsum dolor sit amet, <a href="${request.route_url('')}">cleanr</a>  </p>
+                        <p class="text-center text-muted">Hello, you can <a href=${fig_form | n} >Start here</a>  </p>
                         <hr>
 
                         <div class="top-margin">
-                            ${fig_form | n}
+##                             ${fig_form | n}
 ##                             ${fig | n}
                         </div>
                         <hr>
