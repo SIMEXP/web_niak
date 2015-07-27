@@ -24,5 +24,5 @@ RUN cd  ${PROJECT_ROOT_IN_DOCKER}../  && python3 setup.py develop
 
 WORKDIR ${PROJECT_ROOT_IN_DOCKER}../
 
-ENTRYPOINT ["pserve", "development.ini"]
+# ENTRYPOINT ["pserve", "development.ini"]
 
