@@ -16,4 +16,15 @@ Some library are needed to have the server running they are include in the setup
 Runnig `python setup.py develop` should install all that you need in your virtual environement
 Do not forget to add the package you add for additional developpement in the setup.py file 
 
++++++
+For Docker
+
+Niak in your browser docker experiment
+
+all you have to do is to run 
+
+```docker run -p 666:6543 image/from_docker```
+
+
+Then you can open a browser to the "http://localhost:666" url and acces the web site
 
